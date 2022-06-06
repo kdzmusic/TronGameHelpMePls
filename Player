@@ -1,0 +1,80 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public class Player : MonoBehaviour
+{
+    Rigidbody _rb;
+    public float dirjugador;
+    public Transform transform;
+    public float speed;
+    public bool isDead;
+    public int Vertical;
+    public int Horizontal;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _rb = GetComponent<Rigidbody>();
+        Vertical = 1;
+        Horizontal = 0;
+        speed = 0.2f;
+        isDead = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        float mHorizontal = Input.GetAxis("Horizontal");
+        float mVertical = Input.GetAxis("Vertical");
+        // Vector3 moveDirection = Vector3.forward * mVertical + Vector3.left * mHorizontal;
+        // mVertical = 1;
+
+        if (Vertical != 0)
+        {
+            if (mHorizontal != 0)
+            {
+                if (mHorizontal < 0)
+                    Horizontal = 1;
+                else
+                    Horizontal = -1;
+
+                Vertical = 0;
+            }
+        }
+        else if (Horizontal != 0)
+        {
+            if (mVertical != 0)
+            {
+                if (mVertical > 0)
+                    Vertical = 1;
+                else
+                    Vertical = -1;
+
+                Horizontal = 0;
+            }
+        }
+
+        Vector3 moveDirection = Vector3.forward * Vertical * speed + Vector3.left * Horizontal * speed;
+        transform.position = transform.position + moveDirection;        
+        moveDirection.Normalize();
+    }
+
+    private void RespawnPlayer(Vector3 respawnPoint)
+    {
+        if (isDead == true)
+        {
+            transform.position = respawnPoint;
+        };
+
+    }
+
+  private void OnCollisionEnter(Collision other)
+    {
+        
+    }
+
+
+}
